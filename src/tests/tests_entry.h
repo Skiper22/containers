@@ -1,7 +1,0 @@
-#ifndef SRC_S21_CONTAINERS_1_SRC_TESTS_TESTS_ENTRY_H_
-#define SRC_S21_CONTAINERS_1_SRC_TESTS_TESTS_ENTRY_H_
-
-#include "gtest.h"
-#include "../s21_containers.h"
-
-#endif  // SRC_S21_CONTAINERS_1_SRC_TESTS_TESTS_ENTRY_H_

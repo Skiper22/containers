@@ -2,6 +2,8 @@
 
 #include "s21_base_array_iterator.h"
 
+namespace s21 {
+
 template <typename T>
 class S21Vector;
 
@@ -137,4 +139,6 @@ bool VectorIterator<T>::operator<=(const VectorIterator<T>& other) const noexcep
 template <typename T>
 typename VectorIterator<T>::reference VectorIterator<T>::operator[](int pos) {
     return *(this->get_shared().get() + pos);
+}
+
 }

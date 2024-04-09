@@ -2,8 +2,10 @@
 
 #include "s21_list_node.h"
 
+namespace s21 {
+
 template <typename T>
-class S21List;
+class List;
 
 template <typename T>
 class BaseListIterator {
@@ -13,14 +15,16 @@ class BaseListIterator {
         using pointer = T*;
         using difference_type = std::ptrdiff_t;
         using iterator_category = std::bidirectional_iterator_tag;
+        using node = ListNode<value_type>;
 
         BaseListIterator() = default;
-        BaseListIterator(const BaseListIterator& other) = default;
-        BaseListIterator(BaseListIterator&& other) = default;
-        ~BaseListIterator() noexcept = default;
-
-        BaseListIterator& operator=(const BaseListIterator& other) = default;
-        BaseListIterator& operator=(BaseListIterator&& other) = default;
+        
+        std::weak_ptr<node> get_wp() const {
+            return ptr_;
+        }
+        bool get_end() const {
+            return is_end_;
+        }
 
         reference operator*() const {
             return get_ref().get_data();
@@ -29,12 +33,9 @@ class BaseListIterator {
         pointer operator->() const {
             return &get_ptr()->get_data();
         }
-
     protected:
-        using node = S21ListNode<value_type>;
-        
-        BaseListIterator(std::shared_ptr<node> ptr, bool is_end = false) : ptr_(ptr), is_end_(is_end) {}
-        
+        BaseListIterator(std::weak_ptr<node> ptr, bool is_end = false) : ptr_(ptr), is_end_(is_end) {}
+
         std::shared_ptr<node> get_shared() const {
             try {
                 return ptr_.lock();
@@ -90,9 +91,9 @@ class BaseListIterator {
 };
 
 template <typename T>
-class S21ListIterator : public BaseListIterator<T> {
+class ListIterator : public BaseListIterator<T> {
     public:
-        friend class S21List<T>;
+        friend class List<T>;
         using base = BaseListIterator<T>;
         using value_type = typename base::value_type;
         using pointer = typename base::pointer;
@@ -100,23 +101,23 @@ class S21ListIterator : public BaseListIterator<T> {
         using difference_type = typename base::difference_type;
         using iterator_category = typename base::iterator_category;
         
-        S21ListIterator() = default;
-        S21ListIterator(const S21ListIterator<T>& other) = default;
-        S21ListIterator(S21ListIterator<T>&& other) noexcept = default;
-        ~S21ListIterator() = default;
+        ListIterator() = default;
+        ListIterator(const ListIterator<T>& other) = default;
+        ListIterator(ListIterator<T>&& other) noexcept = default;
+        ~ListIterator() = default;
 
-        S21ListIterator<T>& operator=(const S21ListIterator<T>& other) = default;
-        S21ListIterator<T>& operator=(S21ListIterator<T>&& other) noexcept = default;
+        ListIterator<T>& operator=(const ListIterator<T>& other) = default;
+        ListIterator<T>& operator=(ListIterator<T>&& other) noexcept = default;
         
-        S21ListIterator<T>& operator++();
-        S21ListIterator<T> operator++(int);
-        S21ListIterator<T>& operator--();
-        S21ListIterator<T> operator--(int);
+        ListIterator<T>& operator++();
+        ListIterator<T> operator++(int);
+        ListIterator<T>& operator--();
+        ListIterator<T> operator--(int);
 
-        friend bool operator==(const S21ListIterator& a, const S21ListIterator& b) {
+        friend bool operator==(const ListIterator& a, const ListIterator& b) {
             return a.equals(b);
         }
-        friend bool operator!=(const S21ListIterator& a, const S21ListIterator& b) {
+        friend bool operator!=(const ListIterator& a, const ListIterator& b) {
             return !(a == b);
         }
     
@@ -125,13 +126,13 @@ class S21ListIterator : public BaseListIterator<T> {
 };
 
 template <typename T>
-S21ListIterator<T>& S21ListIterator<T>::operator++() {
+ListIterator<T>& ListIterator<T>::operator++() {
     this->next();
     return *this;
 }
 
 template <typename T>
-S21ListIterator<T> S21ListIterator<T>::operator++(int) {
+ListIterator<T> ListIterator<T>::operator++(int) {
     auto tmp {*this};
     ++(*this);
 
@@ -139,13 +140,13 @@ S21ListIterator<T> S21ListIterator<T>::operator++(int) {
 }
 
 template <typename T>
-S21ListIterator<T>& S21ListIterator<T>::operator--() {
+ListIterator<T>& ListIterator<T>::operator--() {
     this->prev();
     return *this;
 }
 
 template <typename T>
-S21ListIterator<T> S21ListIterator<T>::operator--(int) {
+ListIterator<T> ListIterator<T>::operator--(int) {
     auto tmp {*this};
     --(*this);
 
@@ -153,9 +154,9 @@ S21ListIterator<T> S21ListIterator<T>::operator--(int) {
 }
 
 template <typename T>
-class S21ConstListIterator : public BaseListIterator<const T> {
+class ConstListIterator : public BaseListIterator<const T> {
     public:
-        friend class S21List<T>;
+        friend class List<T>;
         using base = BaseListIterator<const T>;
         using value_type = typename base::value_type;
         using pointer = typename base::pointer;
@@ -163,23 +164,32 @@ class S21ConstListIterator : public BaseListIterator<const T> {
         using difference_type = typename base::difference_type;
         using iterator_category = typename base::iterator_category;
         
-        S21ConstListIterator() = default;
-        S21ConstListIterator(const S21ConstListIterator<T>& other) = default;
-        S21ConstListIterator(S21ConstListIterator<T>&& other) noexcept = default;
-        ~S21ConstListIterator() = default;
+        ConstListIterator() = default;
+        ConstListIterator(const ConstListIterator<T>& other) = default;
+        ConstListIterator(ConstListIterator<T>&& other) noexcept = default;
+        ConstListIterator(const ListIterator<T>& other) : base(other.get_wp(), other.get_end()) {  
+        }
+        ConstListIterator(ListIterator<T>&& other) : base(other.get_wp(), other.get_end()) {
+        }
+        ~ConstListIterator() = default;
+    
+        ConstListIterator<T>& operator=(const ConstListIterator<T>& other) = default;
+        ConstListIterator<T>& operator=(ConstListIterator<T>&& other) noexcept = default;
 
-        S21ConstListIterator<T>& operator=(const S21ConstListIterator<T>& other) = default;
-        S21ConstListIterator<T>& operator=(S21ConstListIterator<T>&& other) noexcept = default;
+        ConstListIterator<T>& operator=(const ListIterator<T>& other) {
+            *this = ConstListIterator<T>(other);
+            return *this;
+        }
         
-        S21ConstListIterator<T>& operator++();
-        S21ConstListIterator<T> operator++(int);
-        S21ConstListIterator<T>& operator--();
-        S21ConstListIterator<T> operator--(int);
+        ConstListIterator<T>& operator++();
+        ConstListIterator<T> operator++(int);
+        ConstListIterator<T>& operator--();
+        ConstListIterator<T> operator--(int);
 
-        friend bool operator==(const S21ConstListIterator& a, const S21ConstListIterator& b) {
+        friend bool operator==(const ConstListIterator& a, const ConstListIterator& b) {
             return a.equals(b);
         }
-        friend bool operator!=(const S21ConstListIterator& a, const S21ConstListIterator& b) {
+        friend bool operator!=(const ConstListIterator& a, const ConstListIterator& b) {
             return !(a == b);
         }
     
@@ -188,13 +198,13 @@ class S21ConstListIterator : public BaseListIterator<const T> {
 };
 
 template <typename T>
-S21ConstListIterator<T>& S21ConstListIterator<T>::operator++() {
+ConstListIterator<T>& ConstListIterator<T>::operator++() {
     this->next();
     return *this;
 }
 
 template <typename T>
-S21ConstListIterator<T> S21ConstListIterator<T>::operator++(int) {
+ConstListIterator<T> ConstListIterator<T>::operator++(int) {
     auto tmp {*this};
     ++(*this);
 
@@ -202,15 +212,17 @@ S21ConstListIterator<T> S21ConstListIterator<T>::operator++(int) {
 }
 
 template <typename T>
-S21ConstListIterator<T>& S21ConstListIterator<T>::operator--() {
+ConstListIterator<T>& ConstListIterator<T>::operator--() {
     this->prev();
     return *this;
 }
 
 template <typename T>
-S21ConstListIterator<T> S21ConstListIterator<T>::operator--(int) {
+ConstListIterator<T> ConstListIterator<T>::operator--(int) {
     auto tmp {*this};
     --(*this);
 
     return tmp;
+}
+
 }

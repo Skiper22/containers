@@ -3,6 +3,8 @@
 #include <memory>
 #include "s21_base_array_iterator.h"
 
+namespace s21 {
+
 template <typename T>
 class S21Vector;
 
@@ -117,4 +119,6 @@ bool ConstVectorIterator<T>::operator>=(const ConstVectorIterator<T>& other) con
 template <typename T>
 bool ConstVectorIterator<T>::operator<=(const ConstVectorIterator<T>& other) const noexcept {
     return this->index_ <= other.index_;
+}
+
 }

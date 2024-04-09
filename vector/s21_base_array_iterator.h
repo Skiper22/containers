@@ -2,6 +2,8 @@
 
 #include <memory>
 
+namespace s21 {
+
 template <typename T>
 class BaseArrayIterator {
     public:
@@ -48,3 +50,5 @@ class BaseArrayIterator {
         size_t index_ {0};
         size_t size_{0};
 };
+
+}

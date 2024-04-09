@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-void print(S21Vector<int> vec) {
+void print(s21::Vector<int> vec) {
     for (auto &el : vec) {
         std::cout << el << " ";
     }
@@ -10,10 +10,10 @@ void print(S21Vector<int> vec) {
 }
 
 int main() {
-    S21Vector<int> vec = {1, 2, 3, 4, 5};
+    s21::Vector<int> vec = {1, 2, 3, 4, 5};
 
-    S21Vector<int>::iterator it_begin = vec.begin();
-    S21Vector<int>::iterator it_end = vec.end();
+    s21::Vector<int>::iterator it_begin = vec.begin();
+    s21::Vector<int>::iterator it_end = vec.end();
     /* for (S21Vector<int>::iterator it = it_begin; it != it_end; ++it) { */
     /*     std::cout << *it << " "; */
     /* } */
