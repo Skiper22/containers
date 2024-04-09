@@ -11,7 +11,7 @@
 
 // VECTOR
 TEST(VectorTest, Constructor_default) {
-  s21::vector<int> s21_v;
+  s21::Vector<int> s21_v;
   std::vector<int> std_v;
   EXPECT_EQ(s21_v.size(), std_v.size());
   EXPECT_EQ(s21_v.capacity(), std_v.capacity());
@@ -20,7 +20,7 @@ TEST(VectorTest, Constructor_default) {
 }
 
 TEST(VectorTest, Constructor_n) {
-  s21::vector<int> s21_v(5);
+  s21::Vector<int> s21_v(5);
   std::vector<int> std_v(5);
   EXPECT_EQ(s21_v.size(), std_v.size());
   EXPECT_EQ(s21_v.capacity(), std_v.capacity());
@@ -29,16 +29,16 @@ TEST(VectorTest, Constructor_n) {
 
 TEST(VectorTest, Constructor_n_throw) {
   try {
-    s21::vector<int> s21_v(-1);
+    s21::Vector<int> s21_v(-1);
     FAIL() << "Expected std::out_of_range";
   } catch (std::out_of_range const& err) {
     EXPECT_EQ(err.what(),
-              std::string("cannot create s21::vector larger than max_size()"));
+              std::string("cannot create s21::Vector larger than max_size()"));
   }
 }
 
 TEST(VectorTest, Constructor_initializer_list_1) {
-  s21::vector<int> s21_v{2, 3, 5, 7, 1};
+  s21::Vector<int> s21_v{2, 3, 5, 7, 1};
   std::vector<int> std_v{2, 3, 5, 7, 1};
   EXPECT_EQ(s21_v.size(), std_v.size());
   EXPECT_EQ(s21_v.capacity(), std_v.capacity());
@@ -52,7 +52,7 @@ TEST(VectorTest, Constructor_initializer_list_1) {
 
 TEST(VectorTest, Constructor_initializer_list_2) {
   std::initializer_list<int> b;
-  s21::vector<int> s21_v{b};
+  s21::Vector<int> s21_v{b};
   std::vector<int> std_v{b};
   EXPECT_EQ(s21_v.size(), std_v.size());
   EXPECT_EQ(s21_v.capacity(), std_v.capacity());
@@ -60,9 +60,9 @@ TEST(VectorTest, Constructor_initializer_list_2) {
 }
 
 TEST(VectorTest, Constructor_copy_1) {
-  s21::vector<int> s21_v{2, 3, 5, 7, 1};
+  s21::Vector<int> s21_v{2, 3, 5, 7, 1};
   std::vector<int> std_v{2, 3, 5, 7, 1};
-  s21::vector<int> s21_copy(s21_v);
+  s21::Vector<int> s21_copy(s21_v);
   std::vector<int> std_copy(std_v);
 
   EXPECT_EQ(s21_v.size(), std_v.size());
@@ -85,8 +85,8 @@ TEST(VectorTest, Constructor_copy_1) {
 }
 
 TEST(VectorTest, Constructor_copy_2) {
-  s21::vector<int> s21_v;
-  s21::vector<int> s21_copy(s21_v);
+  s21::Vector<int> s21_v;
+  s21::Vector<int> s21_copy(s21_v);
   std::vector<int> std_v;
   std::vector<int> std_copy(std_v);
 
@@ -100,8 +100,8 @@ TEST(VectorTest, Constructor_copy_2) {
 }
 
 TEST(VectorTest, Constructor_move_1) {
-  s21::vector<int> s21_v;
-  s21::vector<int> s21_move(s21_v);
+  s21::Vector<int> s21_v;
+  s21::Vector<int> s21_move(s21_v);
   std::vector<int> std_v;
   std::vector<int> std_move(std_v);
 
@@ -115,8 +115,8 @@ TEST(VectorTest, Constructor_move_1) {
 }
 
 TEST(VectorTest, Constructor_move_2) {
-  s21::vector<int> s21_v{1, 2, 3, 4, 5};
-  s21::vector<int> s21_move(s21_v);
+  s21::Vector<int> s21_v{1, 2, 3, 4, 5};
+  s21::Vector<int> s21_move(s21_v);
   std::vector<int> std_v{1, 2, 3, 4, 5};
   std::vector<int> std_move(std_v);
 
@@ -130,7 +130,7 @@ TEST(VectorTest, Constructor_move_2) {
 }
 
 TEST(VectorTest, Destructor) {
-  s21::vector<int> s21_v{1, 2, 3, 4, 5};
+  s21::Vector<int> s21_v{1, 2, 3, 4, 5};
   s21_v.~vector();
 
   EXPECT_EQ(0, s21_v.size());
@@ -139,8 +139,8 @@ TEST(VectorTest, Destructor) {
 }
 
 TEST(VectorTest, Operator_move_1) {
-  s21::vector<int> s21_v1{1, 2, 3};
-  s21::vector<int> s21_v2;
+  s21::Vector<int> s21_v1{1, 2, 3};
+  s21::Vector<int> s21_v2;
   s21_v2 = std::move(s21_v1);
   EXPECT_EQ(s21_v2.size(), 3);
   EXPECT_EQ(s21_v2.at(0), 1);
@@ -149,8 +149,8 @@ TEST(VectorTest, Operator_move_1) {
 }
 
 TEST(VectorTest, Operator_move_2) {
-  s21::vector<int> s21_v1{1, 2, 3};
-  s21::vector<int> s21_v2{4, 5, 6};
+  s21::Vector<int> s21_v1{1, 2, 3};
+  s21::Vector<int> s21_v2{4, 5, 6};
   s21_v2 = std::move(s21_v1);
   EXPECT_EQ(s21_v2.size(), 3);
   EXPECT_EQ(s21_v2.at(0), 1);
@@ -159,7 +159,7 @@ TEST(VectorTest, Operator_move_2) {
 }
 
 TEST(VectorTest, Element_at) {
-  s21::vector<int> s21_v{1, 2, 3, 4, 5};
+  s21::Vector<int> s21_v{1, 2, 3, 4, 5};
   std::vector<int> std_v{1, 2, 3, 4, 5};
 
   EXPECT_EQ(s21_v.at(0), std_v.at(0));
@@ -170,38 +170,38 @@ TEST(VectorTest, Element_at) {
 }
 
 TEST(VectorTest, Element_at_throw) {
-  s21::vector<int> s21_v;
+  s21::Vector<int> s21_v;
   std::vector<int> std_v;
   EXPECT_ANY_THROW(s21_v.at(1));
   EXPECT_ANY_THROW(std_v.at(1));
 }
 
 TEST(VectorTest, Element_front) {
-  s21::vector<int> s21_v{1, 2, 3};
+  s21::Vector<int> s21_v{1, 2, 3};
   std::vector<int> std_v{1, 2, 3};
   EXPECT_EQ(s21_v.front(), std_v.front());
 }
 
 TEST(VectorTest, Element_front_throw) {
-  s21::vector<int> s21_v;
+  s21::Vector<int> s21_v;
   std::vector<int> std_v;
   EXPECT_ANY_THROW(s21_v.front());
 }
 
 TEST(VectorTest, Element_back) {
-  s21::vector<int> s21_v{1, 2, 3};
+  s21::Vector<int> s21_v{1, 2, 3};
   std::vector<int> std_v{1, 2, 3};
   EXPECT_EQ(s21_v.back(), std_v.back());
 }
 
 TEST(VectorTest, Element_back_throw) {
-  s21::vector<int> s21_v;
+  s21::Vector<int> s21_v;
   std::vector<int> std_v;
   EXPECT_ANY_THROW(s21_v.back());
 }
 
 TEST(VectorTest, Element_operator_square_brackets) {
-  s21::vector<int> s21_v{1, 2, 3};
+  s21::Vector<int> s21_v{1, 2, 3};
   std::vector<int> std_v{1, 2, 3};
   EXPECT_EQ(s21_v[0], std_v[0]);
   EXPECT_EQ(s21_v[1], std_v[1]);
@@ -209,66 +209,66 @@ TEST(VectorTest, Element_operator_square_brackets) {
 }
 
 TEST(VectorTest, Element_operator_square_brackets_throw_1) {
-  s21::vector<int> s21_v{1, 2, 3};
+  s21::Vector<int> s21_v{1, 2, 3};
   EXPECT_ANY_THROW(s21_v[5]);
 }
 
 TEST(VectorTest, Element_operator_square_brackets_throw_2) {
-  s21::vector<int> s21_v{1, 2, 3};
+  s21::Vector<int> s21_v{1, 2, 3};
   EXPECT_ANY_THROW(s21_v[-1]);
 }
 
 TEST(VectorTest, Element_data) {
-  s21::vector<int> s21_v{1, 2, 3};
+  s21::Vector<int> s21_v{1, 2, 3};
   std::vector<int> std_v{1, 2, 3};
 
   EXPECT_EQ(*s21_v.data(), *std_v.data());
 }
 
 TEST(VectorTest, Capacity_empty_1) {
-  s21::vector<int> s21_v{1, 2, 3};
+  s21::Vector<int> s21_v{1, 2, 3};
   std::vector<int> std_v{1, 2, 3};
 
   EXPECT_EQ(s21_v.empty(), std_v.empty());
 }
 
 TEST(VectorTest, Capacity_empty_2) {
-  s21::vector<int> s21_v;
+  s21::Vector<int> s21_v;
   std::vector<int> std_v;
 
   EXPECT_EQ(s21_v.empty(), std_v.empty());
 }
 
 TEST(VectorTest, Capacity_size_1) {
-  s21::vector<int> s21_v;
+  s21::Vector<int> s21_v;
   std::vector<int> std_v;
 
   EXPECT_EQ(s21_v.size(), std_v.size());
 }
 
 TEST(VectorTest, Capacity_size_2) {
-  s21::vector<int> s21_v{1, 2, 3};
+  s21::Vector<int> s21_v{1, 2, 3};
   std::vector<int> std_v{1, 2, 3};
 
   EXPECT_EQ(s21_v.size(), std_v.size());
 }
 
 TEST(VectorTest, Capacity_capacity_1) {
-  s21::vector<int> s21_v;
+  s21::Vector<int> s21_v;
   std::vector<int> std_v;
 
   EXPECT_EQ(s21_v.capacity(), std_v.capacity());
 }
 
 TEST(VectorTest, Capacity_capacity_2) {
-  s21::vector<int> s21_v{1, 2, 3};
+  s21::Vector<int> s21_v{1, 2, 3};
   std::vector<int> std_v{1, 2, 3};
 
   EXPECT_EQ(s21_v.capacity(), std_v.capacity());
 }
 
 TEST(VectorTest, Capacity_reserve_1) {
-  s21::vector<int> s21_v;
+  s21::Vector<int> s21_v;
   std::vector<int> std_v;
   s21_v.reserve(2);
   std_v.reserve(2);
@@ -276,7 +276,7 @@ TEST(VectorTest, Capacity_reserve_1) {
 }
 
 TEST(VectorTest, Capacity_reserve_2) {
-  s21::vector<int> s21_v{1, 2, 3};
+  s21::Vector<int> s21_v{1, 2, 3};
   std::vector<int> std_v{1, 2, 3};
   s21_v.reserve(2);
   std_v.reserve(2);
@@ -284,7 +284,7 @@ TEST(VectorTest, Capacity_reserve_2) {
 }
 
 TEST(VectorTest, Capacity_reserve_3) {
-  s21::vector<int> s21_v{1, 2, 3};
+  s21::Vector<int> s21_v{1, 2, 3};
   std::vector<int> std_v{1, 2, 3};
   s21_v.reserve(10);
   std_v.reserve(10);
@@ -292,14 +292,14 @@ TEST(VectorTest, Capacity_reserve_3) {
 }
 
 TEST(VectorTest, Capacity_reserve_4_throw) {
-  s21::vector<int> s21_v{1, 2, 3};
+  s21::Vector<int> s21_v{1, 2, 3};
   std::vector<int> std_v{1, 2, 3};
   EXPECT_ANY_THROW(s21_v.reserve(-2));
   EXPECT_ANY_THROW(std_v.reserve(-2));
 }
 
 TEST(VectorTest, Capacity_shrink_to_fit_1) {
-  s21::vector<int> s21_v;
+  s21::Vector<int> s21_v;
   std::vector<int> std_v;
   s21_v.reserve(10);
   std_v.reserve(10);
@@ -309,7 +309,7 @@ TEST(VectorTest, Capacity_shrink_to_fit_1) {
 }
 
 TEST(VectorTest, Capacity_shrink_to_fit_2) {
-  s21::vector<int> s21_v{1, 2, 3};
+  s21::Vector<int> s21_v{1, 2, 3};
   std::vector<int> std_v{1, 2, 3};
   s21_v.reserve(10);
   std_v.reserve(10);
@@ -319,7 +319,7 @@ TEST(VectorTest, Capacity_shrink_to_fit_2) {
 }
 
 TEST(VectorTest, Modifiers_clear_1) {
-  s21::vector<int> s21_v;
+  s21::Vector<int> s21_v;
   std::vector<int> std_v;
   s21_v.clear();
   std_v.clear();
@@ -328,7 +328,7 @@ TEST(VectorTest, Modifiers_clear_1) {
 }
 
 TEST(VectorTest, Modifiers_clear_2) {
-  s21::vector<int> s21_v{1, 2, 3};
+  s21::Vector<int> s21_v{1, 2, 3};
   std::vector<int> std_v{1, 2, 3};
   s21_v.clear();
   std_v.clear();
@@ -337,7 +337,7 @@ TEST(VectorTest, Modifiers_clear_2) {
 }
 
 TEST(VectorTest, Modifiers_insert_1) {
-  s21::vector<int> s21_v{1, 2, 3};
+  s21::Vector<int> s21_v{1, 2, 3};
   std::vector<int> std_v{1, 2, 3};
   s21_v.insert(s21_v.begin() + 1, 5);
   std_v.insert(std_v.begin() + 1, 5);
@@ -348,7 +348,7 @@ TEST(VectorTest, Modifiers_insert_1) {
 }
 
 TEST(VectorTest, Modifiers_insert_2) {
-  s21::vector<int> s21_v{50, 10, 40, 20, 30};
+  s21::Vector<int> s21_v{50, 10, 40, 20, 30};
   std::vector<int> std_v{50, 10, 40, 20, 30};
   s21_v.insert(s21_v.begin() + s21_v.size(), 100);
   std_v.insert(std_v.begin() + std_v.size(), 100);
@@ -358,7 +358,7 @@ TEST(VectorTest, Modifiers_insert_2) {
 
 TEST(VectorTest, Modifiers_insert_3) {
   try {
-    s21::vector<int> s21_v{50, 10, 40, 20, 30};
+    s21::Vector<int> s21_v{50, 10, 40, 20, 30};
     s21_v.insert(s21_v.begin() + 10, 100);
     FAIL() << "Expected std::out_of_range";
   } catch (std::out_of_range const& err) {
@@ -368,7 +368,7 @@ TEST(VectorTest, Modifiers_insert_3) {
 
 TEST(VectorTest, Modifiers_insert_4) {
   try {
-    s21::vector<int> s21_v{50, 10, 40, 20, 30};
+    s21::Vector<int> s21_v{50, 10, 40, 20, 30};
     s21_v.insert(s21_v.begin() - 4, 100);
     FAIL() << "Expected std::out_of_range";
   } catch (std::out_of_range const& err) {
@@ -377,7 +377,7 @@ TEST(VectorTest, Modifiers_insert_4) {
 }
 
 TEST(VectorTest, Modifiers_erase_1) {
-  s21::vector<int> s21_v{1, 2, 3, 4};
+  s21::Vector<int> s21_v{1, 2, 3, 4};
   std::vector<int> std_v{1, 2, 3, 4};
 
   s21_v.erase(s21_v.begin() + 1);
@@ -389,7 +389,7 @@ TEST(VectorTest, Modifiers_erase_1) {
 }
 
 TEST(VectorTest, Modifiers_erase_2) {
-  s21::vector<int> s21_v{50, 10, 40, 20, 30};
+  s21::Vector<int> s21_v{50, 10, 40, 20, 30};
   std::vector<int> std_v{50, 10, 40, 20, 30};
   s21_v.erase(s21_v.begin());
   std_v.erase(std_v.begin());
@@ -401,7 +401,7 @@ TEST(VectorTest, Modifiers_erase_2) {
 }
 
 TEST(VectorTest, Modifiers_erase_3) {
-  s21::vector<int> s21_v{50, 10, 40, 20, 30};
+  s21::Vector<int> s21_v{50, 10, 40, 20, 30};
   std::vector<int> std_v{50, 10, 40, 20, 30};
   s21_v.erase(s21_v.end() - 1);
   std_v.erase(std_v.end() - 1);
@@ -414,7 +414,7 @@ TEST(VectorTest, Modifiers_erase_3) {
 
 TEST(VectorTest, Modifiers_erase_4) {
   try {
-    s21::vector<int> s21_v{50, 10, 40, 20, 30};
+    s21::Vector<int> s21_v{50, 10, 40, 20, 30};
     s21_v.erase(s21_v.begin() - 1);
     FAIL() << "Expected std::out_of_range";
   } catch (std::out_of_range const& err) {
@@ -424,7 +424,7 @@ TEST(VectorTest, Modifiers_erase_4) {
 
 TEST(VectorTest, Modifiers_erase_5) {
   try {
-    s21::vector<int> s21_v{50, 10, 40, 20, 30};
+    s21::Vector<int> s21_v{50, 10, 40, 20, 30};
     s21_v.erase(s21_v.end() + 1);
     FAIL() << "Expected std::out_of_range";
   } catch (std::out_of_range const& err) {
@@ -433,7 +433,7 @@ TEST(VectorTest, Modifiers_erase_5) {
 }
 
 TEST(VectorTest, Modifiers_push_back_1) {
-  s21::vector<int> s21_v;
+  s21::Vector<int> s21_v;
   std::vector<int> std_v;
 
   s21_v.push_back(2);
@@ -453,7 +453,7 @@ TEST(VectorTest, Modifiers_push_back_1) {
 }
 
 TEST(VectorTest, Modifiers_push_back_2) {
-  s21::vector<int> s21_v{1, 2};
+  s21::Vector<int> s21_v{1, 2};
   std::vector<int> std_v{1, 2};
 
   s21_v.push_back(2);
@@ -475,7 +475,7 @@ TEST(VectorTest, Modifiers_push_back_2) {
 }
 
 TEST(VectorTest, Modifiers_pop_back_1) {
-  s21::vector<int> s21_v{1, 2};
+  s21::Vector<int> s21_v{1, 2};
 
   s21_v.pop_back();
   s21_v.pop_back();
@@ -487,7 +487,7 @@ TEST(VectorTest, Modifiers_pop_back_1) {
 }
 
 TEST(VectorTest, Modifiers_pop_back_2) {
-  s21::vector<int> s21_v;
+  s21::Vector<int> s21_v;
 
   s21_v.pop_back();
   s21_v.pop_back();
@@ -499,8 +499,8 @@ TEST(VectorTest, Modifiers_pop_back_2) {
 }
 
 TEST(VectorTest, Modifiers_swap_1) {
-  s21::vector<int> s21_v;
-  s21::vector<int> s21_v_copy;
+  s21::Vector<int> s21_v;
+  s21::Vector<int> s21_v_copy;
 
   std::vector<int> std_v;
   std::vector<int> std_v_copy;
@@ -516,8 +516,8 @@ TEST(VectorTest, Modifiers_swap_1) {
 }
 
 TEST(VectorTest, Modifiers_swap_2) {
-  s21::vector<int> s21_v{1, 2, 3, 4};
-  s21::vector<int> s21_v_copy;
+  s21::Vector<int> s21_v{1, 2, 3, 4};
+  s21::Vector<int> s21_v_copy;
 
   std::vector<int> std_v{1, 2, 3, 4};
   std::vector<int> std_v_copy;
@@ -533,8 +533,8 @@ TEST(VectorTest, Modifiers_swap_2) {
 }
 
 TEST(VectorTest, Modifiers_swap_3) {
-  s21::vector<int> s21_v{1, 2, 3, 4};
-  s21::vector<int> s21_v_copy{1, 2};
+  s21::Vector<int> s21_v{1, 2, 3, 4};
+  s21::Vector<int> s21_v_copy{1, 2};
 
   std::vector<int> std_v{1, 2, 3, 4};
   std::vector<int> std_v_copy{1, 2};
@@ -550,8 +550,8 @@ TEST(VectorTest, Modifiers_swap_3) {
 }
 
 TEST(VectorTest, Modifiers_swap_4) {
-  s21::vector<int> s21_v{1, 2, 3, 4};
-  s21::vector<int> s21_v_copy{1, 2, 3, 4, 5, 6};
+  s21::Vector<int> s21_v{1, 2, 3, 4};
+  s21::Vector<int> s21_v_copy{1, 2, 3, 4, 5, 6};
 
   std::vector<int> std_v{1, 2, 3, 4};
   std::vector<int> std_v_copy{1, 2, 3, 4, 5, 6};
@@ -568,14 +568,14 @@ TEST(VectorTest, Modifiers_swap_4) {
 
 TEST(VectorTest, Helpers_add_memotysize_1) {
   int n = 1000;
-  s21::vector<int> s21_v(n);
+  s21::Vector<int> s21_v(n);
   s21_v.push_back(1);
   EXPECT_EQ(s21_v.size(), n + 1);
 }
 
 TEST(VectorTest, Helpers_add_memotysize_2) {
   int n = 10000;
-  s21::vector<int> s21_v(n);
+  s21::Vector<int> s21_v(n);
   s21_v.push_back(1);
 
   EXPECT_EQ(s21_v.size(), n + 1);
@@ -583,7 +583,7 @@ TEST(VectorTest, Helpers_add_memotysize_2) {
 
 TEST(VectorTest, Helpers_add_memotysize_3) {
   int n = 100000;
-  s21::vector<int> s21_v(n);
+  s21::Vector<int> s21_v(n);
   s21_v.push_back(1);
   s21_v.push_back(1);
   s21_v.push_back(1);
@@ -883,7 +883,7 @@ TEST(VectorTest, Helpers_add_memotysize_3) {
 // LIST
 
 template <typename value_type>
-bool compare_lists(s21::list<value_type> my_list,
+bool compare_lists(s21::List<value_type> my_list,
                    std::list<value_type> std_list) {
   bool result = true;
   if (my_list.size() == std_list.size()) {
@@ -904,7 +904,7 @@ bool compare_lists(s21::list<value_type> my_list,
 }
 
 TEST(ListTest, CompareLists) {
-  s21::list<int> my_list{1, 2, 3, 4, 5};
+  s21::List<int> my_list{1, 2, 3, 4, 5};
   std::list<int> std_list{1, 2, 3, 4, 5};
   EXPECT_TRUE(compare_lists(my_list, std_list));
   std_list.push_back(6);
@@ -916,7 +916,7 @@ TEST(ListTest, CompareLists) {
 }
 
 TEST(ListTest, DefaultConstructor) {
-  s21::list<int> my_list;
+  s21::List<int> my_list;
   std::list<int> std_list;
   EXPECT_EQ(my_list.size(), 0);
   EXPECT_TRUE(my_list.empty());
@@ -925,7 +925,7 @@ TEST(ListTest, DefaultConstructor) {
 }
 
 TEST(ListTest, SizeConstructor) {
-  s21::list<int> my_list(1000000);
+  s21::List<int> my_list(1000000);
   std::list<int> std_list(1000000);
   EXPECT_EQ(my_list.size(), 1000000);
   EXPECT_TRUE(compare_lists(my_list, std_list));
@@ -933,7 +933,7 @@ TEST(ListTest, SizeConstructor) {
 
 TEST(ListTest, SizeConstructorThrow) {
   try {
-    s21::list<int> my_list(-1);
+    s21::List<int> my_list(-1);
     FAIL() << "Expected std::out_of_range";
   } catch (std::out_of_range const& err) {
     EXPECT_EQ(err.what(), std::string("Limit of the container is exceeded"));
@@ -941,38 +941,38 @@ TEST(ListTest, SizeConstructorThrow) {
 }
 
 TEST(ListTest, InitializerListConstructor) {
-  s21::list<int> my_list{1, 2, 3, 7, 9};
+  s21::List<int> my_list{1, 2, 3, 7, 9};
   std::list<int> std_list{1, 2, 3, 7, 9};
   EXPECT_TRUE(compare_lists(my_list, std_list));
 }
 
 TEST(ListTest, InitializerListConstructor_2) {
   std::initializer_list<int> b;
-  s21::list<int> my_list{b};
+  s21::List<int> my_list{b};
   std::list<int> std_list{b};
   EXPECT_TRUE(compare_lists(my_list, std_list));
 }
 
 TEST(ListTest, CopyConstructor) {
-  s21::list<int> my_list{1, 2, 3};
-  s21::list<int> my_list_copy(my_list);
+  s21::List<int> my_list{1, 2, 3};
+  s21::List<int> my_list_copy(my_list);
   std::list<int> std_list{1, 2, 3};
   std::list<int> std_list_copy(std_list);
   EXPECT_TRUE(compare_lists(my_list_copy, std_list_copy));
 }
 
 TEST(ListTest, CopyConstructorEmpty) {
-  s21::list<int> my_list;
-  s21::list<int> my_list_copy(my_list);
+  s21::List<int> my_list;
+  s21::List<int> my_list_copy(my_list);
   std::list<int> std_list;
   std::list<int> std_list_copy(std_list);
   EXPECT_TRUE(compare_lists(my_list_copy, std_list_copy));
 }
 
 TEST(ListTest, MoveConstructor) {
-  s21::list<int> my_list{1, 2, 3};
-  s21::list<int> my_list_copy(my_list);
-  s21::list<int> my_list_move(std::move(my_list));
+  s21::List<int> my_list{1, 2, 3};
+  s21::List<int> my_list_copy(my_list);
+  s21::List<int> my_list_move(std::move(my_list));
   std::list<int> std_list{1, 2, 3};
   std::list<int> std_list_copy(std_list);
   std::list<int> std_list_move(std::move(std_list));
@@ -980,9 +980,9 @@ TEST(ListTest, MoveConstructor) {
 }
 
 TEST(ListTest, MoveConstructorEmpty) {
-  s21::list<int> my_list;
-  s21::list<int> my_list_copy(my_list);
-  s21::list<int> my_list_move(std::move(my_list));
+  s21::List<int> my_list;
+  s21::List<int> my_list_copy(my_list);
+  s21::List<int> my_list_move(std::move(my_list));
   std::list<int> std_list;
   std::list<int> std_list_copy(std_list);
   std::list<int> std_list_move(std::move(std_list));
@@ -990,9 +990,9 @@ TEST(ListTest, MoveConstructorEmpty) {
 }
 
 TEST(ListTest, MoveAssignmentOperator) {
-  s21::list<int> my_list{1, 2, 3};
-  s21::list<int> my_list_copy(my_list);
-  s21::list<int> my_list_move = std::move(my_list);
+  s21::List<int> my_list{1, 2, 3};
+  s21::List<int> my_list_copy(my_list);
+  s21::List<int> my_list_move = std::move(my_list);
   std::list<int> std_list{1, 2, 3};
   std::list<int> std_list_copy(std_list);
   std::list<int> std_list_move = std::move(std_list);
@@ -1000,9 +1000,9 @@ TEST(ListTest, MoveAssignmentOperator) {
 }
 
 TEST(ListTest, MoveAssignmentOperatorEmpty) {
-  s21::list<int> my_list;
-  s21::list<int> my_list_copy(my_list);
-  s21::list<int> my_list_move = std::move(my_list);
+  s21::List<int> my_list;
+  s21::List<int> my_list_copy(my_list);
+  s21::List<int> my_list_move = std::move(my_list);
   std::list<int> std_list;
   std::list<int> std_list_copy(std_list);
   std::list<int> std_list_move = std::move(std_list);
@@ -1010,19 +1010,19 @@ TEST(ListTest, MoveAssignmentOperatorEmpty) {
 }
 
 TEST(ListTest, Front) {
-  s21::list<int> my_list{99, 2, 3, 4, 5};
+  s21::List<int> my_list{99, 2, 3, 4, 5};
   std::list<int> std_list{99, 2, 3, 4, 5};
   EXPECT_EQ(my_list.front(), std_list.front());
 }
 
 TEST(ListTest, Back) {
-  s21::list<int> my_list{1, 2, 3, 4, 99};
+  s21::List<int> my_list{1, 2, 3, 4, 99};
   std::list<int> std_list{1, 2, 3, 4, 99};
   EXPECT_EQ(my_list.back(), std_list.back());
 }
 
 TEST(ListTest, Empty) {
-  s21::list<int> my_list;
+  s21::List<int> my_list;
   std::list<int> std_list;
   EXPECT_EQ(my_list.empty(), std_list.empty());
   my_list.push_back(10);
@@ -1031,25 +1031,25 @@ TEST(ListTest, Empty) {
 }
 
 TEST(ListTest, Size) {
-  s21::list<int> my_list{1, 2, 3, 4, 5, 6, 7, 8};
+  s21::List<int> my_list{1, 2, 3, 4, 5, 6, 7, 8};
   std::list<int> std_list{1, 2, 3, 4, 5, 6, 7, 8};
   EXPECT_EQ(my_list.size(), std_list.size());
 }
 
 TEST(ListTest, SizeEmpty) {
-  s21::list<int> my_list;
+  s21::List<int> my_list;
   std::list<int> std_list;
   EXPECT_EQ(my_list.size(), std_list.size());
 }
 
 TEST(ListTest, MaxSize) {
-  s21::list<size_t> my_list_empty;
+  s21::List<size_t> my_list_empty;
   std::list<size_t> std_list_empty;
   EXPECT_EQ(my_list_empty.max_size(), std_list_empty.max_size());
 }
 
 TEST(ListTest, Clear) {
-  s21::list<int> my_list{1, 2, 3, 4};
+  s21::List<int> my_list{1, 2, 3, 4};
   my_list.clear();
   std::list<int> std_list{1, 2, 5, 4, 3};
   std_list.clear();
@@ -1057,7 +1057,7 @@ TEST(ListTest, Clear) {
 }
 
 TEST(ListTest, ClearEmpty) {
-  s21::list<int> my_list;
+  s21::List<int> my_list;
   my_list.clear();
   std::list<int> std_list;
   std_list.clear();
@@ -1065,7 +1065,7 @@ TEST(ListTest, ClearEmpty) {
 }
 
 TEST(ListTest, PushBack) {
-  s21::list<int> my_list{1, 2, 3, 4, 5};
+  s21::List<int> my_list{1, 2, 3, 4, 5};
   my_list.push_back(6);
   std::list<int> std_list{1, 2, 3, 4, 5};
   std_list.push_back(6);
@@ -1073,7 +1073,7 @@ TEST(ListTest, PushBack) {
 }
 
 TEST(ListTest, PopBack) {
-  s21::list<int> my_list{1, 2, 3, 4, 5};
+  s21::List<int> my_list{1, 2, 3, 4, 5};
   my_list.pop_back();
   std::list<int> std_list{1, 2, 3, 4, 5};
   std_list.pop_back();
@@ -1081,7 +1081,7 @@ TEST(ListTest, PopBack) {
 }
 
 TEST(ListTest, PushFront) {
-  s21::list<int> my_list{1, 2, 3, 4, 5};
+  s21::List<int> my_list{1, 2, 3, 4, 5};
   my_list.push_front(0);
   std::list<int> std_list{1, 2, 3, 4, 5};
   std_list.push_front(0);
@@ -1089,7 +1089,7 @@ TEST(ListTest, PushFront) {
 }
 
 TEST(ListTest, PopFront) {
-  s21::list<int> my_list{1, 2, 3, 4, 5};
+  s21::List<int> my_list{1, 2, 3, 4, 5};
   my_list.pop_front();
   std::list<int> std_list{1, 2, 3, 4, 5};
   std_list.pop_front();
@@ -1097,8 +1097,8 @@ TEST(ListTest, PopFront) {
 }
 
 TEST(ListTest, Swap) {
-  s21::list<int> my_list1{1, 2, 3, 4, 5};
-  s21::list<int> my_list2{6, 7, 8, 9, 10, 11};
+  s21::List<int> my_list1{1, 2, 3, 4, 5};
+  s21::List<int> my_list2{6, 7, 8, 9, 10, 11};
   my_list1.swap(my_list2);
 
   std::list<int> std_list1{1, 2, 3, 4, 5};
@@ -1110,8 +1110,8 @@ TEST(ListTest, Swap) {
 }
 
 TEST(ListTest, Swap_2) {
-  s21::list<int> my_list1{1, 5, 8, 100};
-  s21::list<int> my_list2;
+  s21::List<int> my_list1{1, 5, 8, 100};
+  s21::List<int> my_list2;
   my_list1.swap(my_list2);
 
   std::list<int> std_list1{1, 5, 8, 100};
@@ -1123,50 +1123,50 @@ TEST(ListTest, Swap_2) {
 }
 
 TEST(ListTest, begin_1) {
-  s21::list<int> my_list1{500, 15000, 30000};
+  s21::List<int> my_list1{500, 15000, 30000};
 
   std::list<int> std_list2{500, 15000, 30000};
   EXPECT_EQ(*my_list1.begin(), *std_list2.begin());
 }
 
 TEST(ListTest, begin_2) {
-  s21::list<int> my_list1(4);
+  s21::List<int> my_list1(4);
 
   std::list<int> std_list2(4);
   EXPECT_EQ(*my_list1.begin(), *std_list2.begin());
 }
 
 TEST(ListTest, begin_3_throw) {
-  s21::list<int> my_list1;
+  s21::List<int> my_list1;
   std::list<int> std_list2;
 
   EXPECT_EQ(*my_list1.begin(), 0);
 }
 
 TEST(ListTest, end_1) {
-  s21::list<int> my_list1{500, 15000, 30000};
+  s21::List<int> my_list1{500, 15000, 30000};
 
   std::list<int> std_list2{500, 15000, 30000};
   EXPECT_EQ(*my_list1.begin(), *std_list2.begin());
 }
 
 TEST(ListTest, end_2) {
-  s21::list<int> my_list1(4);
+  s21::List<int> my_list1(4);
 
   std::list<int> std_list2(4);
   EXPECT_EQ(*my_list1.end(), *std_list2.end());
 }
 
 TEST(ListTest, end_3) {
-  s21::list<int> my_list1;
+  s21::List<int> my_list1;
 
   std::list<int> std_list2;
   EXPECT_EQ(*my_list1.end(), *std_list2.end());
 }
 
 TEST(ListTest, Merge_1) {
-  s21::list<int> my_list1{1, 9999, 20000};
-  s21::list<int> my_list2{500, 15000, 30000};
+  s21::List<int> my_list1{1, 9999, 20000};
+  s21::List<int> my_list2{500, 15000, 30000};
   my_list1.merge(my_list2);
 
   std::list<int> std_list1{1, 9999, 20000};
@@ -1176,8 +1176,8 @@ TEST(ListTest, Merge_1) {
 }
 
 TEST(ListTest, Merge_2) {
-  s21::list<int> my_list1{1, 9999, 20000};
-  s21::list<int> my_list2{15000, 30000};
+  s21::List<int> my_list1{1, 9999, 20000};
+  s21::List<int> my_list2{15000, 30000};
   my_list1.merge(my_list2);
 
   std::list<int> std_list1{1, 9999, 20000};
@@ -1187,8 +1187,8 @@ TEST(ListTest, Merge_2) {
 }
 
 TEST(ListTest, Merge_3) {
-  s21::list<int> my_list1{1, 20000, 666};
-  s21::list<int> my_list2{15000, 154, 124, 30000};
+  s21::List<int> my_list1{1, 20000, 666};
+  s21::List<int> my_list2{15000, 154, 124, 30000};
   my_list1.merge(my_list2);
 
   std::list<int> std_list1{1, 20000, 666};
@@ -1198,8 +1198,8 @@ TEST(ListTest, Merge_3) {
 }
 
 TEST(ListTest, Merge_4) {
-  s21::list<int> my_list1;
-  s21::list<int> my_list2{15000, 154, 124, 30000};
+  s21::List<int> my_list1;
+  s21::List<int> my_list2{15000, 154, 124, 30000};
   my_list1.merge(my_list2);
 
   std::list<int> std_list1;
@@ -1209,8 +1209,8 @@ TEST(ListTest, Merge_4) {
 }
 
 TEST(ListTest, Merge_5) {
-  s21::list<int> my_list1{1, 20000, 666};
-  s21::list<int> my_list2;
+  s21::List<int> my_list1{1, 20000, 666};
+  s21::List<int> my_list2;
   my_list1.merge(my_list2);
 
   std::list<int> std_list1{1, 20000, 666};
@@ -1220,8 +1220,8 @@ TEST(ListTest, Merge_5) {
 }
 
 TEST(ListTest, Merge_6) {
-  s21::list<int> my_list1;
-  s21::list<int> my_list2;
+  s21::List<int> my_list1;
+  s21::List<int> my_list2;
   my_list1.merge(my_list2);
 
   std::list<int> std_list1;
@@ -1231,7 +1231,7 @@ TEST(ListTest, Merge_6) {
 }
 
 TEST(ListTest, Reverse_1) {
-  s21::list<int> my_list{1, 2, 3, 4, 5};
+  s21::List<int> my_list{1, 2, 3, 4, 5};
   std::list<int> std_list{1, 2, 3, 4, 5};
   my_list.reverse();
   std_list.reverse();
@@ -1239,7 +1239,7 @@ TEST(ListTest, Reverse_1) {
 }
 
 TEST(ListTest, Reverse_2) {
-  s21::list<int> my_list(4);
+  s21::List<int> my_list(4);
   std::list<int> std_list(4);
   my_list.reverse();
   std_list.reverse();
@@ -1247,7 +1247,7 @@ TEST(ListTest, Reverse_2) {
 }
 
 TEST(ListTest, Reverse_3) {
-  s21::list<int> my_list;
+  s21::List<int> my_list;
   std::list<int> std_list;
   my_list.reverse();
   std_list.reverse();
@@ -1255,7 +1255,7 @@ TEST(ListTest, Reverse_3) {
 }
 
 TEST(ListTest, Unique_1) {
-  s21::list<int> my_list{90, 10, 3, 40, 30, 20, 10, 10, 90, 90, 90};
+  s21::List<int> my_list{90, 10, 3, 40, 30, 20, 10, 10, 90, 90, 90};
   std::list<int> std_list{90, 10, 3, 40, 30, 20, 10, 10, 90, 90, 90};
   my_list.unique();
   std_list.unique();
@@ -1263,7 +1263,7 @@ TEST(ListTest, Unique_1) {
 }
 
 TEST(ListTest, Unique_2) {
-  s21::list<int> my_list(3);
+  s21::List<int> my_list(3);
   std::list<int> std_list(3);
   my_list.unique();
   std_list.unique();
@@ -1271,7 +1271,7 @@ TEST(ListTest, Unique_2) {
 }
 
 TEST(ListTest, Unique_3) {
-  s21::list<int> my_list;
+  s21::List<int> my_list;
   std::list<int> std_list;
   my_list.unique();
   std_list.unique();
@@ -1279,8 +1279,8 @@ TEST(ListTest, Unique_3) {
 }
 
 TEST(ListTest, Splice_1) {
-  s21::list<int> my_list1{1, 9999, 20000};
-  s21::list<int> my_list2{500, 15000, 30000};
+  s21::List<int> my_list1{1, 9999, 20000};
+  s21::List<int> my_list2{500, 15000, 30000};
   my_list1.splice(my_list1.begin(), my_list2);
 
   std::list<int> std_list1{1, 9999, 20000};
@@ -1290,8 +1290,8 @@ TEST(ListTest, Splice_1) {
 }
 
 TEST(ListTest, Splice_2) {
-  s21::list<int> my_list1;
-  s21::list<int> my_list2{500, 15000, 30000};
+  s21::List<int> my_list1;
+  s21::List<int> my_list2{500, 15000, 30000};
   my_list1.splice(my_list1.begin(), my_list2);
 
   std::list<int> std_list1;
@@ -1301,8 +1301,8 @@ TEST(ListTest, Splice_2) {
 }
 
 TEST(ListTest, Splice_3) {
-  s21::list<int> my_list1{1, 9999, 20000};
-  s21::list<int> my_list2;
+  s21::List<int> my_list1{1, 9999, 20000};
+  s21::List<int> my_list2;
   my_list1.splice(my_list1.begin(), my_list2);
 
   std::list<int> std_list1{1, 9999, 20000};
@@ -1312,8 +1312,8 @@ TEST(ListTest, Splice_3) {
 }
 
 TEST(ListTest, Splice_4) {
-  s21::list<int> my_list1;
-  s21::list<int> my_list2;
+  s21::List<int> my_list1;
+  s21::List<int> my_list2;
   my_list1.splice(my_list1.begin(), my_list2);
 
   std::list<int> std_list1;
@@ -1323,7 +1323,7 @@ TEST(ListTest, Splice_4) {
 }
 
 TEST(ListTest, Insert_1) {
-  s21::list<int> my_list1{1, 9999, 20000};
+  s21::List<int> my_list1{1, 9999, 20000};
   my_list1.insert(my_list1.begin(), 5);
 
   std::list<int> std_list1{1, 9999, 20000};
@@ -1333,7 +1333,7 @@ TEST(ListTest, Insert_1) {
 }
 
 TEST(ListTest, Insert_2) {
-  s21::list<int> my_list1{1, 9999, 20000};
+  s21::List<int> my_list1{1, 9999, 20000};
   my_list1.insert(my_list1.end(), 5);
 
   std::list<int> std_list1{1, 9999, 20000};
@@ -1343,7 +1343,7 @@ TEST(ListTest, Insert_2) {
 }
 
 TEST(ListTest, Insert_3) {
-  s21::list<int> my_list1;
+  s21::List<int> my_list1;
   my_list1.insert(my_list1.begin(), 5);
 
   std::list<int> std_list1;
@@ -1353,7 +1353,7 @@ TEST(ListTest, Insert_3) {
 }
 
 TEST(ListTest, Insert_4) {
-  s21::list<int> my_list1;
+  s21::List<int> my_list1;
   my_list1.insert(my_list1.end(), 5);
 
   std::list<int> std_list1;
@@ -1363,7 +1363,7 @@ TEST(ListTest, Insert_4) {
 }
 
 TEST(ListTest, Insert_5) {
-  s21::list<int> my_list1(4);
+  s21::List<int> my_list1(4);
   my_list1.insert(my_list1.begin(), 5);
 
   std::list<int> std_list1(4);
@@ -1373,7 +1373,7 @@ TEST(ListTest, Insert_5) {
 }
 
 TEST(ListTest, Insert_6) {
-  s21::list<int> my_list1(4);
+  s21::List<int> my_list1(4);
   my_list1.insert(my_list1.end(), 5);
 
   std::list<int> std_list1(4);
@@ -1383,7 +1383,7 @@ TEST(ListTest, Insert_6) {
 }
 
 TEST(ListTest, Erase_1) {
-  s21::list<int> my_list1{1, 9999, 20000};
+  s21::List<int> my_list1{1, 9999, 20000};
   my_list1.erase(my_list1.begin());
 
   std::list<int> std_list1{1, 9999, 20000};
@@ -1393,13 +1393,13 @@ TEST(ListTest, Erase_1) {
 }
 
 TEST(ListTest, Erase_2_throw) {
-  s21::list<int> my_list1{1, 9999, 20000};
+  s21::List<int> my_list1{1, 9999, 20000};
 
   EXPECT_THROW(my_list1.erase(my_list1.end()), std::invalid_argument);
 }
 
 TEST(ListTest, Erase_3) {
-  s21::list<int> my_list1{1, 9999, 20000};
+  s21::List<int> my_list1{1, 9999, 20000};
   my_list1.erase(--my_list1.end());
 
   std::list<int> std_list1{1, 9999, 20000};
@@ -1409,13 +1409,13 @@ TEST(ListTest, Erase_3) {
 }
 
 TEST(ListTest, Erase_4_throw) {
-  s21::list<int> my_list1;
+  s21::List<int> my_list1;
 
   EXPECT_THROW(my_list1.erase(my_list1.end()--), std::invalid_argument);
 }
 
 TEST(ListTest, Erase_5) {
-  s21::list<int> my_list1(5);
+  s21::List<int> my_list1(5);
   my_list1.erase(--my_list1.end());
 
   std::list<int> std_list1(5);
