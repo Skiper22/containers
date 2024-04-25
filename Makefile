@@ -1,10 +1,9 @@
-
 .PHONY : all clean test clang valgrind gcov_report rebuild
 
-CC=gcc
+CC=g++
 CFLAGS=-Wall -Werror -Wextra
-CPPFLAGS=-lstdc++ -std=c++17
-TEST_FLAGS:=$(CFLAGS) -g #-fsanitize=address -O1 -fno-omit-frame-pointer
+CPPFLAGS=-lstdc++ -std=c++17 -Ihash_table -Ilist -Ivector -Istack -Iqueue -Imap -Iset -Imultiset -Iarray
+TEST_FLAGS:=$(CFLAGS) -g3 -fsanitize=address -fno-omit-frame-pointer
 LINUX_FLAGS =-lrt -lpthread -lm -lsubunit
 GCOV_FLAGS?=--coverage#-fprofile-arcs -ftest-coverage
 LIBS=-lgtest
@@ -46,15 +45,6 @@ endif
 	lcov -t "stest" -o s21_test.info -c -d ./ --no-external
 	genhtml -o report s21_test.info
 	$(OPEN_CMD) ./report/index.html
-
-clang:
-	cp ../materials/linters/.clang-format ../src/.clang-format
-	clang-format -style=Google -n unit_tests.cc s21_containers/s21_containers.h \
-	s21_containers/vector/* s21_containers/list/* s21_containers/queue/* \
-	s21_containers/stack/* s21_containers/setMap/avlTree/* \
-	s21_containers/setMap/iterators/* s21_containers/setMap/Map/* \
-	s21_containers/setMap/Set/*
-	rm .clang-format
 
 leaks: test
 	leaks -atExit -- ./unit_test
